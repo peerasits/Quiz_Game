@@ -22,14 +22,14 @@ public class WordDetailsActivity extends AppCompatActivity {
         String itemJson = intent.getStringExtra("item");
         WordItem item = new Gson().fromJson(itemJson, WordItem.class);
 
-        //String word = intent.getStringExtra("word");
-        //int img = intent.getIntExtra("image",0);
+        String word = intent.getStringExtra("word");
+        int img = intent.getIntExtra("image",0);
 
         ImageView iv = findViewById(R.id.image_view);
         TextView tv = findViewById(R.id.word_text_view);
 
-        //iv.setImageResource(item.imageResId);
-        //tv.setText(item.word);
+        iv.setImageResource(item.imageResId);
+        tv.setText(item.word);
 
 
     }

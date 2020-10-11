@@ -98,11 +98,11 @@ public class WordListActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Toast.makeText(context,"hello",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(context, WordDetailsActivity.class);
-                        //intent.putExtra("word",item.word);
-                        //intent.putExtra("image",item.imageResId);
+                        intent.putExtra("word",item.word);
+                        intent.putExtra("image",item.imageResId);
 
-                        String itemJSon = new Gson().toJson(item);
-                        intent.putExtra("item",itemJSon);
+                        //String itemJSon = new Gson().toJson(item);
+                        //intent.putExtra("item",itemJSon);
                         context.startActivity(intent);
                     }
                 });

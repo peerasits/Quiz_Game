@@ -2,10 +2,14 @@ package th.ac.su.cp.quizgame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,6 +23,8 @@ import th.ac.su.cp.quizgame.model.WordItem;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView mQuestionImageView;
+    private TextView text;
+    private int score,count;
     private Button[] mButtons =  new Button [4];
     private String mAnswerWord;
     private  Random mRandom;
@@ -28,6 +34,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        text = findViewById(R.id.score_text);
 
 
         mQuestionImageView = findViewById(R.id.question_image_view);
@@ -47,6 +54,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void newQuiz() {
+        text.setText(String.valueOf(score)+" score");
         mItemList = new ArrayList<>(Arrays.asList(WordListActivity.items));
         //สุ่ม Index ของคำตอบ (คำถาม)
         int answerIndex = mRandom.nextInt(mItemList.size());
@@ -83,8 +91,34 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         if(buttonText.equals(mAnswerWord)){
             Toast.makeText(GameActivity.this,"ถูกต้องครับ",Toast.LENGTH_SHORT).show();
-        }else
-            Toast.makeText(GameActivity.this,"ผิดครับ",Toast.LENGTH_SHORT).show();
-        newQuiz();
+            score++;
+            text.setText(String.valueOf(score)+" score");
+        }else {
+            Toast.makeText(GameActivity.this, "ผิดครับ", Toast.LENGTH_SHORT).show();
+            text.setText(String.valueOf(score) + " score");
+        }
+        count++;
+        if(count<5)
+            newQuiz();
+        else{
+            count = 0;
+            AlertDialog.Builder dialog = new AlertDialog.Builder(GameActivity.this);
+            dialog.setTitle("สรุปผล");
+            dialog.setMessage("คุณได้ "+String.valueOf(score)+" คะแนน"+"\n\n"+"ต้องการเล่นเกมใหม่หรือไม่");
+            dialog.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    score = 0;
+                    newQuiz();
+                }
+            });
+            dialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            dialog.show();
+        }
     }
 }
